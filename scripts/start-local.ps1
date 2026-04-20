@@ -29,5 +29,6 @@ $health = Invoke-RestMethod -Uri "http://127.0.0.1:$Port/api/health" -Method Get
 Write-Host "`nBackend health: $($health.data.status)" -ForegroundColor Green
 Write-Host "Backend Base URL: http://127.0.0.1:$Port"
 Write-Host "Bearer Token: $Token"
-Write-Host "Frontend file: $(Join-Path $projectRoot 'frontend\index.html')"
-Write-Host "`nOpen frontend and paste Base URL + Token." -ForegroundColor Yellow
+Write-Host "Admin UI: http://127.0.0.1:$Port/admin/"
+Write-Host "Mobile UI: http://127.0.0.1:$Port/mobile/"
+Write-Host "`nOpen /admin to manage tunnel and copy mobile links." -ForegroundColor Yellow

@@ -7,6 +7,7 @@
 - 选择会话续聊（基于 `thread_id`）
 - 手机端文本、文件、语音输入
 - 停止当前会话运行
+- 电脑端 Admin 启动台（同端口 Web UI）
 - 外网访问部署（参考文档）
 
 ## 目录
@@ -59,17 +60,18 @@ cd "D:\CODEX项目\cpdex phone"
 powershell -ExecutionPolicy Bypass -File .\scripts\start-local.ps1
 ```
 
-### 2) 打开前端
+### 2) 打开 Web UI（同端口）
 
-前端是静态页，直接打开即可：
+后端启动后，同一端口直接提供两套页面：
 
 ```powershell
-start "D:\CODEX项目\cpdex phone\frontend\index.html"
+start http://127.0.0.1:8890/admin/
 ```
 
-进入页面后填写：
-- `Backend Base URL`：例如 `http://127.0.0.1:8890`
-- `Bearer Token`：即 `CPDEX_BRIDGE_TOKEN`
+- 电脑端控制台：`/admin/`
+- 手机聊天界面：`/mobile/`
+
+在 `admin` 页面可以直接看到 token、启动/停止 quick tunnel、复制手机端连接地址。
 
 ### 3) 外网访问
 
@@ -90,3 +92,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\start-external-quicktunnel.ps
 - 本机后端地址（默认 `http://127.0.0.1:8890`）
 - Bearer Token
 - Cloudflare 临时公网地址（`https://*.trycloudflare.com`）
+
+拿到公网地址后，手机直接打开：
+
+- `https://<你的临时域名>/mobile/`

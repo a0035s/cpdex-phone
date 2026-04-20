@@ -58,6 +58,7 @@ async function loadOptionalTasks(tasksConfigPath) {
 
 export async function loadConfig() {
   const backendRoot = process.cwd();
+  const projectRoot = path.resolve(backendRoot, "..");
   const dataDir = path.resolve(backendRoot, "data");
   const defaultWorkdir = toResolvedPath(
     backendRoot,
@@ -75,10 +76,17 @@ export async function loadConfig() {
   const configuredTasks = await loadOptionalTasks(tasksConfigPath);
 
   return {
+    projectRoot,
+    backendRoot,
+    frontendRoot: path.resolve(projectRoot, "frontend"),
+    adminUiRoot: path.resolve(backendRoot, "admin-ui"),
     host: process.env.CPDEX_HOST ?? process.env.HOST ?? "127.0.0.1",
     port: toInt(process.env.CPDEX_PORT ?? process.env.PORT, 8890),
     bridgeToken,
     codexExecutable: process.env.CPDEX_CODEX_EXECUTABLE ?? process.env.CODEX_EXECUTABLE ?? "codex.exe",
+    cloudflaredPath: path.resolve(
+      process.env.CPDEX_CLOUDFLARED_PATH ?? path.resolve(projectRoot, "tools", "cloudflared.exe"),
+    ),
     asrCommand: (process.env.CPDEX_ASR_COMMAND ?? "").trim(),
     defaultTask: {
       id: "task_default",

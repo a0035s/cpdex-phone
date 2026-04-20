@@ -1,21 +1,38 @@
 ﻿import http from "node:http";
 import path from "node:path";
-import { mkdir, unlink, writeFile } from "node:fs/promises";
+import { mkdir, readFile, unlink, writeFile } from "node:fs/promises";
 
 import { loadConfig } from "./config.js";
 import { runCodexTurn } from "./codex-runner.js";
 import { StateStore, buildTaskDefinitions } from "./state-store.js";
 import { transcribeAudio } from "./asr.js";
 import { makeId, nowIso, sanitizeFilename } from "./utils.js";
+import { TunnelManager } from "./tunnel-manager.js";
 
 const config = await loadConfig();
 const taskDefinitions = buildTaskDefinitions(config.defaultTask, config.configuredTasks);
 const store = new StateStore(config.statePath, taskDefinitions);
 const runningSessions = new Map();
 const sessionQueues = new Map();
+const tunnelManager = new TunnelManager({
+  cloudflaredPath: config.cloudflaredPath,
+  targetUrl: `http://127.0.0.1:${config.port}`,
+});
 
 await mkdir(config.uploadsRoot, { recursive: true });
 await store.init();
+
+const MIME_TYPES = {
+  ".html": "text/html; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
+  ".css": "text/css; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
+  ".svg": "image/svg+xml",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".ico": "image/x-icon",
+};
 
 function sendJson(response, statusCode, payload) {
   response.statusCode = statusCode;
@@ -44,6 +61,68 @@ function fail(response, requestId, statusCode, code, message, details = null) {
       details,
     },
   });
+}
+
+function sendText(response, statusCode, contentType, body) {
+  response.statusCode = statusCode;
+  response.setHeader("Content-Type", contentType);
+  response.end(body);
+}
+
+function redirect(response, location) {
+  response.statusCode = 302;
+  response.setHeader("Location", location);
+  response.end();
+}
+
+function isLoopbackAddress(address) {
+  return address === "127.0.0.1"
+    || address === "::1"
+    || address === "::ffff:127.0.0.1";
+}
+
+function isLocalHostHeader(hostHeader) {
+  const host = String(hostHeader || "").toLowerCase().split(":")[0];
+  return host === "127.0.0.1" || host === "localhost" || host === "[::1]";
+}
+
+function isLocalAdminRequest(request) {
+  return isLocalHostHeader(request.headers.host)
+    && isLoopbackAddress(request.socket.remoteAddress);
+}
+
+function resolveStaticFile(rootDir, pathnamePrefix, pathname) {
+  let relative = pathname.slice(pathnamePrefix.length);
+  if (!relative || relative === "/") {
+    relative = "/index.html";
+  }
+
+  const normalized = decodeURIComponent(relative).replace(/^\/+/, "");
+  const candidate = path.resolve(rootDir, normalized);
+  const rootNormalized = path.resolve(rootDir);
+  const rootPrefix = rootNormalized.endsWith(path.sep)
+    ? rootNormalized
+    : `${rootNormalized}${path.sep}`;
+
+  if (candidate !== rootNormalized && !candidate.startsWith(rootPrefix)) {
+    return null;
+  }
+
+  return candidate;
+}
+
+async function serveFile(response, filePath) {
+  try {
+    const content = await readFile(filePath);
+    const ext = path.extname(filePath).toLowerCase();
+    const type = MIME_TYPES[ext] ?? "application/octet-stream";
+    response.statusCode = 200;
+    response.setHeader("Content-Type", type);
+    response.setHeader("Cache-Control", "no-store");
+    response.end(content);
+  } catch {
+    sendText(response, 404, "text/plain; charset=utf-8", "Not found");
+  }
 }
 
 function isAuthorized(request) {
@@ -391,6 +470,92 @@ const server = http.createServer(async (request, response) => {
   const pathname = url.pathname;
 
   try {
+    if (request.method === "GET" && pathname === "/") {
+      redirect(response, "/mobile/");
+      return;
+    }
+
+    if (request.method === "GET" && pathname === "/mobile") {
+      redirect(response, "/mobile/");
+      return;
+    }
+
+    if (request.method === "GET" && pathname.startsWith("/mobile/")) {
+      const filePath = resolveStaticFile(config.frontendRoot, "/mobile/", pathname);
+      if (!filePath) {
+        sendText(response, 400, "text/plain; charset=utf-8", "Invalid path");
+        return;
+      }
+      await serveFile(response, filePath);
+      return;
+    }
+
+    if (pathname.startsWith("/admin")) {
+      if (!isLocalAdminRequest(request)) {
+        sendText(response, 403, "text/plain; charset=utf-8", "Admin console is only available on localhost.");
+        return;
+      }
+
+      if (request.method === "GET" && pathname === "/admin") {
+        redirect(response, "/admin/");
+        return;
+      }
+
+      if (request.method === "GET" && pathname.startsWith("/admin/")) {
+        const filePath = resolveStaticFile(config.adminUiRoot, "/admin/", pathname);
+        if (!filePath) {
+          sendText(response, 400, "text/plain; charset=utf-8", "Invalid path");
+          return;
+        }
+        await serveFile(response, filePath);
+        return;
+      }
+    }
+
+    if (pathname.startsWith("/api/admin/")) {
+      if (!isLocalAdminRequest(request)) {
+        fail(response, requestId, 403, "FORBIDDEN", "Admin API is only available on localhost");
+        return;
+      }
+
+      if (request.method === "GET" && pathname === "/api/admin/status") {
+        const tunnel = tunnelManager.snapshot();
+        const localOrigin = `http://127.0.0.1:${config.port}`;
+        ok(response, requestId, {
+          backend: {
+            host: config.host,
+            port: config.port,
+            origin: localOrigin,
+            mobilePath: "/mobile/",
+            adminPath: "/admin/",
+            bridgeToken: config.bridgeToken,
+            cloudflaredPath: config.cloudflaredPath,
+          },
+          tunnel,
+          quickLinks: {
+            localMobileUrl: `${localOrigin}/mobile/`,
+            localMobileUrlWithToken: `${localOrigin}/mobile/?baseUrl=${encodeURIComponent(localOrigin)}&token=${encodeURIComponent(config.bridgeToken)}`,
+            publicMobileUrl: tunnel.publicUrl
+              ? `${tunnel.publicUrl}/mobile/?baseUrl=${encodeURIComponent(tunnel.publicUrl)}&token=${encodeURIComponent(config.bridgeToken)}`
+              : "",
+          },
+        });
+        return;
+      }
+
+      if (request.method === "POST" && pathname === "/api/admin/tunnel/start") {
+        const tunnel = await tunnelManager.start();
+        ok(response, requestId, tunnel);
+        return;
+      }
+
+      if (request.method === "POST" && pathname === "/api/admin/tunnel/stop") {
+        const tunnel = tunnelManager.stop();
+        ok(response, requestId, tunnel);
+        return;
+      }
+    }
+
     if (pathname !== "/api/health" && !isAuthorized(request)) {
       fail(response, requestId, 401, "UNAUTHORIZED", "Missing or invalid bearer token");
       return;
@@ -626,6 +791,8 @@ server.listen(config.port, config.host, () => {
 });
 
 function shutdown() {
+  tunnelManager.stop();
+
   for (const running of runningSessions.values()) {
     running.stop();
   }

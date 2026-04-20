@@ -3,6 +3,7 @@
 ## 目标
 
 提供一个可运行的 Node.js 本地桥接服务，让手机端通过 HTTP 与本机 `codex.exe` 会话。
+并提供电脑端 Web Admin 启动台，用于查看 token、控制 quick tunnel、生成手机连接链接。
 
 ## 技术实现
 
@@ -12,6 +13,8 @@
 - 持久化: `backend/data/state.json`
 - 上传存储: `backend/data/uploads/<sessionId>/`
 - 鉴权: 静态 Bearer Token（`CPDEX_BRIDGE_TOKEN`）
+- 本地管理台: `http://127.0.0.1:<port>/admin/`
+- 手机页面: `http://127.0.0.1:<port>/mobile/`
 
 ## 关键能力
 

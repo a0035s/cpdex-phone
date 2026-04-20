@@ -5,6 +5,7 @@ Base URL: `/api`
 ## Auth
 
 - `GET /api/health` 不需要鉴权。
+- `GET /api/admin/*` 与 `POST /api/admin/*` 不走 Bearer，但仅允许本机 `localhost/127.0.0.1` 访问。
 - 其他接口都需要 Header:
 
 ```http
@@ -56,6 +57,18 @@ Authorization: Bearer <CPDEX_BRIDGE_TOKEN>
   }
 }
 ```
+
+## 1A) GET /api/admin/status
+
+仅本机可访问，返回桌面启动台状态（后端信息、tunnel 状态、快速链接）。
+
+## 1B) POST /api/admin/tunnel/start
+
+仅本机可访问，启动 cloudflared quick tunnel。
+
+## 1C) POST /api/admin/tunnel/stop
+
+仅本机可访问，停止 quick tunnel。
 
 ## 2) GET /api/tasks
 

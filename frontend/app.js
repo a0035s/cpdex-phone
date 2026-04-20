@@ -75,6 +75,28 @@ function setStatus(message, tone = "info") {
 function loadConfigFromStorage() {
   state.baseUrl = normalizeBaseUrl(localStorage.getItem(STORAGE_KEYS.baseUrl) || "");
   state.token = (localStorage.getItem(STORAGE_KEYS.token) || "").trim();
+  if (!state.baseUrl && window.location.origin) {
+    state.baseUrl = normalizeBaseUrl(window.location.origin);
+  }
+  els.baseUrlInput.value = state.baseUrl;
+  els.tokenInput.value = state.token;
+}
+
+function applyUrlOverrides() {
+  const params = new URLSearchParams(window.location.search);
+  const baseUrl = normalizeBaseUrl(params.get("baseUrl") || "");
+  const token = (params.get("token") || "").trim();
+
+  if (baseUrl) {
+    state.baseUrl = baseUrl;
+    localStorage.setItem(STORAGE_KEYS.baseUrl, baseUrl);
+  }
+
+  if (token) {
+    state.token = token;
+    localStorage.setItem(STORAGE_KEYS.token, token);
+  }
+
   els.baseUrlInput.value = state.baseUrl;
   els.tokenInput.value = state.token;
 }
@@ -591,6 +613,7 @@ function bindEvents() {
 
 async function bootstrap() {
   loadConfigFromStorage();
+  applyUrlOverrides();
   bindEvents();
 
   if (!mediaRecorderSupported()) {

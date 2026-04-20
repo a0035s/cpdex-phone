@@ -13,9 +13,16 @@ npm start
 
 默认地址：`http://127.0.0.1:8890`
 
+同端口页面：
+- 管理台：`/admin/`
+- 手机聊天页：`/mobile/`
+
 ## 已实现接口
 
 - `GET /api/health`
+- `GET /api/admin/status`（仅 localhost）
+- `POST /api/admin/tunnel/start`（仅 localhost）
+- `POST /api/admin/tunnel/stop`（仅 localhost）
 - `GET /api/tasks`
 - `GET /api/tasks/:taskId/sessions`
 - `POST /api/tasks/:taskId/sessions`
@@ -35,5 +42,6 @@ npm start
 ## 说明
 
 - 除 `/api/health` 外都需要 `Authorization: Bearer <token>`。
+- `/admin/*` 和 `/api/admin/*` 只允许本机 `localhost/127.0.0.1` 访问。
 - 会话执行采用单会话串行队列，避免并发上下文冲突。
 - 附件按会话落盘到 `backend/data/uploads/<sessionId>/`。

@@ -57,7 +57,8 @@ try {
   Write-Host "`nBackend is ready." -ForegroundColor Green
   Write-Host "Backend Base URL: http://127.0.0.1:$Port"
   Write-Host "Bearer Token: $Token"
-  Write-Host "Frontend file: $(Join-Path $projectRoot 'frontend\index.html')"
+  Write-Host "Admin UI: http://127.0.0.1:$Port/admin/"
+  Write-Host "Mobile UI: http://127.0.0.1:$Port/mobile/"
 
   if ($SkipTunnel) {
     Write-Host "`nSkipTunnel mode enabled. Tunnel was not started." -ForegroundColor Yellow
@@ -67,7 +68,7 @@ try {
   Ensure-Cloudflared -TargetPath $cloudflaredPath
 
   Write-Host "`nStarting Cloudflare Quick Tunnel..." -ForegroundColor Cyan
-  Write-Host "Copy the https://*.trycloudflare.com URL from output below." -ForegroundColor Yellow
+  Write-Host "Copy the https://*.trycloudflare.com URL from output below, then open /mobile/ on that domain." -ForegroundColor Yellow
   Write-Host "Press Ctrl+C to stop tunnel and backend." -ForegroundColor Yellow
   & $cloudflaredPath tunnel --url "http://127.0.0.1:$Port" --protocol http2
 }

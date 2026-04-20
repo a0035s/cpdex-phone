@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>cpdex admin</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <h1>cpdex Admin Console</h1>
+        <p>Desktop startup panel for mobile connection and tunnel control</p>
+      </header>
+
+      <section class="card">
+        <h2>Backend</h2>
+        <p id="backendMeta" class="meta">Loading...</p>
+        <div class="row">
+          <button id="refreshBtn" class="btn">Refresh</button>
+          <a id="openMobileLocal" class="btn primary" href="/mobile/" target="_blank" rel="noreferrer">Open Mobile UI (Local)</a>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Access Token</h2>
+        <label class="field">
+          <span>Bearer Token</span>
+          <textarea id="tokenBox" rows="2" readonly></textarea>
+        </label>
+        <div class="row">
+          <button id="copyTokenBtn" class="btn">Copy Token</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Quick Tunnel</h2>
+        <p id="tunnelMeta" class="meta">Tunnel stopped</p>
+        <div class="row">
+          <button id="startTunnelBtn" class="btn primary">Start Tunnel</button>
+          <button id="stopTunnelBtn" class="btn danger">Stop Tunnel</button>
+        </div>
+        <label class="field">
+          <span>Public URL</span>
+          <input id="publicUrlBox" type="text" readonly />
+        </label>
+        <label class="field">
+          <span>Mobile URL (Auto Token)</span>
+          <input id="publicMobileBox" type="text" readonly />
+        </label>
+        <div class="row">
+          <button id="copyPublicBtn" class="btn">Copy Public URL</button>
+          <button id="copyMobileBtn" class="btn">Copy Mobile URL</button>
+          <a id="openMobilePublic" class="btn" href="#" target="_blank" rel="noreferrer">Open Public Mobile UI</a>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Tunnel Logs</h2>
+        <pre id="logBox" class="logs"></pre>
+      </section>
+
+      <p id="statusBar" class="status">Idle</p>
+    </main>
+    <script src="./app.js" defer></script>
+  </body>
+</html>

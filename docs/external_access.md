@@ -2,6 +2,10 @@
 
 本文档面向 `cpdex phone` 项目，目标是让手机在外网访问本机 `codex.exe` 桥接服务，同时保持可控安全边界。
 
+当前版本为单端口模式：
+- 电脑管理台：`/admin/`（仅 localhost 访问）
+- 手机聊天页：`/mobile/`（可通过 tunnel 远程访问）
+
 ## 1. 两种推荐模式
 
 ### 1.1 Cloudflare Tunnel（长期稳定外网域名）
