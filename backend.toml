@@ -1,0 +1,13 @@
+name = "backend"
+role = "Template Role"
+goal = "產出服務端程式碼、API 或其他中游交付物"
+
+[inputs]
+files = ["docs/prd.md", "docs/db_design.md", "sql/init.sql"]
+
+[outputs]
+files = ["backend/", "docs/api.md", "docs/service_info.md"]
+
+[rules]
+must_create_output = true
+focus = "介面一致、結構清楚、方便下游對接"

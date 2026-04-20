@@ -1,0 +1,89 @@
+多 Agent 模板使用說明
+
+PRD 是什麼：
+
+PRD = Product Requirements Document
+中文可以理解成「產品需求文檔」或「需求說明書」。
+它是整個項目最先要寫的文件，用來說明這個項目要做什麼、給誰用、有哪些功能、怎樣算完成。
+
+PRD 在哪裡填：
+
+請直接填這個文件：
+docs\prd.md
+
+不需要另外自己新建一個 PDR 或 PRD 文件，模板裡已經幫你準備好了。
+你之後通常直接打開 docs\prd.md，把裡面的占位內容改成你的項目需求就可以。
+
+如果之後有額外需求文件：
+
+可以自己新增文件，放在 docs 資料夾裡即可。
+例如：
+docs\ui_notes.md
+docs\feature_list.md
+docs\deploy.md
+
+1. 這個資料夾是專案副本，可以直接在裡面開始使用。
+2. 先修改 docs\prd.md，寫入你的專案需求。
+3. 再按需要修改 pipeline.json 和各個 *.toml。
+4. backend、frontend、sql、docs 都是專案內部使用的固定位置。
+
+建議對线程 / agent 的開場說明：
+
+這個專案按目前目錄下的 AGENTS.md 和 pipeline.json 執行。
+先從 docs/prd.md 開始，角色定義參考各個 *.toml。
+後續輸出請放到模板指定的位置。
+
+自主執行版：
+
+這個專案按目前目錄下的 AGENTS.md 和 pipeline.json 執行。
+請盡量自主完成整個流程，不需要每一步都問我。
+只有在需求衝突、關鍵資訊缺失、或有重大風險時再停下確認。
+其餘情況請自行往下完成，最後再交給我審查。
+
+簡短版：
+
+請按當前專案目錄裡的多 agent 模板協作。
+規則看 AGENTS.md，流程看 pipeline.json。
+先補 docs/prd.md，再按步驟往下做。
+
+使用流程：
+
+1. 填 PRD
+2. 改流程
+3. 跑後續角色
+4. 用 reviewer 檢查
+
+注意：
+
+1. 這是專案內部使用的模板副本。
+2. 不需要另外再放一份到別的地方，通常直接放在專案資料夾裡即可。
+3. 開始時跟线程說一次這個專案要依照 AGENTS.md 和 pipeline.json 即可。
+4. 如果你希望它少問你，可以直接使用上面的「自主執行版」說法。
+
+常見專案類型怎麼裁模板：
+
+做網站：
+- 建議保留 pm、frontend、reviewer
+- 如果有後端，再加 backend
+- 如果資料很簡單，dba 可以省略
+
+做工具：
+- 建議保留 pm、backend、reviewer
+- 如果工具有資料存取，再加 dba
+- frontend 通常可以省略
+
+做軟件 / 應用：
+- 通常保留 pm、backend、frontend、reviewer
+- 有資料庫就保留 dba
+- 如果是完整產品，通常五個角色都能保留
+
+快速判斷：
+
+1. 有介面，保留 frontend
+2. 有資料庫或資料結構，保留 dba
+3. 有主程式邏輯，保留 backend
+4. 正式專案通常保留 pm 和 reviewer
+
+最簡單口訣：
+
+新項目 = 複製整個文件夾 + 改名 + 填 docs\prd.md + 開始做

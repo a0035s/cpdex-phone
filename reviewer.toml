@@ -1,0 +1,18 @@
+name = "reviewer"
+role = "Template Role"
+goal = "驗證各角色輸出是否完整、對齊且可交付"
+
+[inputs]
+files = [
+  "docs/prd.md",
+  "docs/db_design.md",
+  "docs/api.md",
+  "docs/service_info.md"
+]
+
+[outputs]
+files = ["docs/review.json"]
+
+[rules]
+must_create_output = true
+focus = "缺漏檢查、風險提醒、上下游一致性"

@@ -1,0 +1,13 @@
+name = "dba"
+role = "Template Role"
+goal = "根據需求文檔產出結構設計與初始化腳本"
+
+[inputs]
+files = ["docs/prd.md"]
+
+[outputs]
+files = ["docs/db_design.md", "sql/init.sql"]
+
+[rules]
+must_create_output = true
+focus = "結構清楚、輸出穩定、可被下游依賴"

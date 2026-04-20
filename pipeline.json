@@ -1,0 +1,43 @@
+{
+  "project": "template-project",
+  "version": "template",
+  "pipeline": [
+    {
+      "step": 1,
+      "agent": "pm",
+      "state": "pending",
+      "input": [],
+      "output": ["docs/prd.md"]
+    },
+    {
+      "step": 2,
+      "agent": "dba",
+      "state": "pending",
+      "input": ["docs/prd.md"],
+      "output": ["docs/db_design.md", "sql/init.sql"]
+    },
+    {
+      "step": 3,
+      "agent": "backend",
+      "state": "pending",
+      "input": ["docs/prd.md", "docs/db_design.md", "sql/init.sql"],
+      "loop_input": ["docs/review.json"],
+      "output": ["backend/", "docs/api.md", "docs/service_info.md"]
+    },
+    {
+      "step": 4,
+      "agent": "frontend",
+      "state": "pending",
+      "input": ["docs/prd.md", "docs/api.md"],
+      "loop_input": ["docs/review.json"],
+      "output": ["frontend/"]
+    },
+    {
+      "step": 5,
+      "agent": "reviewer",
+      "state": "pending",
+      "input": ["docs/prd.md", "docs/db_design.md", "docs/api.md", "docs/service_info.md"],
+      "output": ["docs/review.json"]
+    }
+  ]
+}

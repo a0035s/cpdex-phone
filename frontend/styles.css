@@ -1,0 +1,300 @@
+:root {
+  --bg: #f4f6fb;
+  --card: #ffffff;
+  --ink: #1c2430;
+  --muted: #637083;
+  --line: #d7deea;
+  --brand: #0e7490;
+  --brand-strong: #0a617a;
+  --danger: #b42318;
+  --danger-strong: #912018;
+  --ok: #027a48;
+  --warn: #b54708;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(circle at top right, #e8f0fb, var(--bg) 45%);
+  color: var(--ink);
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+}
+
+.app {
+  width: min(980px, 100%);
+  margin: 0 auto;
+  padding: 14px;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.hero p {
+  margin: 6px 0 14px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 14px rgba(15, 33, 54, 0.06);
+}
+
+.grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;
+}
+
+h2 {
+  margin: 0;
+  font-size: 1.02rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.field span {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+input,
+textarea,
+button {
+  font: inherit;
+}
+
+input,
+textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: var(--ink);
+  background: #fff;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.row > * {
+  flex: 1 1 auto;
+}
+
+.header-row {
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.header-row > h2 {
+  flex: 0 0 auto;
+}
+
+.pill {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 2px 10px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.btn {
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  border-radius: 10px;
+  padding: 10px 12px;
+  min-height: 42px;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn.primary {
+  border-color: var(--brand);
+  background: var(--brand);
+  color: #fff;
+}
+
+.btn.primary:hover {
+  background: var(--brand-strong);
+}
+
+.btn.danger {
+  border-color: var(--danger);
+  background: var(--danger);
+  color: #fff;
+}
+
+.btn.danger:hover {
+  background: var(--danger-strong);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.list-btn {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 10px;
+  padding: 9px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  cursor: pointer;
+}
+
+.list-btn strong {
+  font-size: 0.93rem;
+}
+
+.list-btn span {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.list-btn.active {
+  border-color: var(--brand);
+  background: #ebf9fd;
+}
+
+.messages {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  min-height: 240px;
+  max-height: 420px;
+  overflow: auto;
+  padding: 10px;
+  background: #f9fbff;
+}
+
+.message {
+  max-width: 88%;
+  border-radius: 10px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  border: 1px solid transparent;
+}
+
+.message.user {
+  margin-left: auto;
+  background: #e6f6ff;
+  border-color: #b7e4ff;
+}
+
+.message.assistant {
+  margin-right: auto;
+  background: #f7f7f8;
+  border-color: #dedee2;
+}
+
+.message-role {
+  font-size: 0.74rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.message-content {
+  font-size: 0.92rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.message-time {
+  margin-top: 5px;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.chat-form {
+  margin-top: 10px;
+}
+
+.divider {
+  border-top: 1px dashed var(--line);
+  margin: 12px 0;
+}
+
+.meta {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin: 6px 0 0;
+  word-break: break-word;
+}
+
+.empty {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 0;
+  padding: 10px;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  background: #fafcff;
+}
+
+.status {
+  margin: 2px 0 20px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.status.ok {
+  color: var(--ok);
+}
+
+.status.warn {
+  color: var(--warn);
+}
+
+.status.error {
+  color: var(--danger);
+}
+
+@media (min-width: 900px) {
+  .app {
+    padding: 20px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

@@ -1,0 +1,9 @@
+﻿{
+  "tasks": [
+    {
+      "id": "task_tools",
+      "name": "Tools Workspace",
+      "workdir": "D:\\CODEX项目\\cpdex phone"
+    }
+  ]
+}

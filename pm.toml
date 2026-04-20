@@ -1,0 +1,13 @@
+name = "pm"
+role = "Template Role"
+goal = "整理需求、拆分任務、產出上游文檔"
+
+[inputs]
+files = []
+
+[outputs]
+files = ["docs/prd.md"]
+
+[rules]
+must_create_output = true
+focus = "上游需求清晰、範圍明確、交付標準可替換"

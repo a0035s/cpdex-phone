@@ -1,0 +1,13 @@
+name = "frontend"
+role = "Template Role"
+goal = "根據上游文檔完成前端或客戶端交付物"
+
+[inputs]
+files = ["docs/prd.md", "docs/api.md"]
+
+[outputs]
+files = ["frontend/"]
+
+[rules]
+must_create_output = true
+focus = "輸出完整、互動清楚、與上游對齊"

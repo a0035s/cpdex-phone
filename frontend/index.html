@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>cpdex phone</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <h1>cpdex phone</h1>
+        <p>Mobile bridge for tasks, sessions, and chat</p>
+      </header>
+
+      <section class="card">
+        <h2>Connection</h2>
+        <label class="field">
+          <span>Backend Base URL</span>
+          <input id="baseUrlInput" type="url" placeholder="https://example.com" />
+        </label>
+        <label class="field">
+          <span>Bearer Token</span>
+          <textarea id="tokenInput" rows="2" placeholder="Paste access token"></textarea>
+        </label>
+        <div class="row">
+          <button id="saveConfigBtn" class="btn primary" type="button">Save</button>
+          <button id="loadTasksBtn" class="btn" type="button">Load Tasks</button>
+        </div>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <div class="row header-row">
+            <h2>Tasks</h2>
+            <span id="taskCount" class="pill">0</span>
+          </div>
+          <ul id="taskList" class="list"></ul>
+        </article>
+
+        <article class="card">
+          <div class="row header-row">
+            <h2>Sessions</h2>
+            <span id="sessionCount" class="pill">0</span>
+          </div>
+          <div class="row">
+            <input id="newSessionNameInput" type="text" placeholder="New session name (optional)" />
+            <button id="createSessionBtn" class="btn" type="button">Create</button>
+          </div>
+          <ul id="sessionList" class="list"></ul>
+        </article>
+      </section>
+
+      <section class="card">
+        <div class="row header-row">
+          <h2>Chat</h2>
+          <span id="selectedSessionMeta" class="meta">No session selected</span>
+        </div>
+        <div id="messageList" class="messages"></div>
+        <form id="chatForm" class="chat-form">
+          <textarea id="messageInput" rows="3" placeholder="Type a message"></textarea>
+          <div class="row">
+            <button id="sendBtn" class="btn primary" type="submit">Send</button>
+            <button id="stopBtn" class="btn danger" type="button">Stop Run</button>
+          </div>
+        </form>
+        <div class="divider"></div>
+        <div class="upload-box">
+          <label class="field">
+            <span>File Upload</span>
+            <input id="fileInput" type="file" />
+          </label>
+          <button id="uploadBtn" class="btn" type="button">Upload File (Base64)</button>
+          <p id="uploadMeta" class="meta"></p>
+        </div>
+        <div class="voice-box">
+          <button id="recordBtn" class="btn" type="button">Start Voice</button>
+          <p id="voiceMeta" class="meta"></p>
+        </div>
+      </section>
+
+      <p id="statusBar" class="status">Idle</p>
+    </main>
+    <script src="./app.js" defer></script>
+  </body>
+</html>
