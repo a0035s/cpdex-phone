@@ -76,7 +76,7 @@ export async function loadConfig() {
 
   return {
     host: process.env.CPDEX_HOST ?? process.env.HOST ?? "127.0.0.1",
-    port: toInt(process.env.CPDEX_PORT ?? process.env.PORT, 8787),
+    port: toInt(process.env.CPDEX_PORT ?? process.env.PORT, 8890),
     bridgeToken,
     codexExecutable: process.env.CPDEX_CODEX_EXECUTABLE ?? process.env.CODEX_EXECUTABLE ?? "codex.exe",
     asrCommand: (process.env.CPDEX_ASR_COMMAND ?? "").trim(),

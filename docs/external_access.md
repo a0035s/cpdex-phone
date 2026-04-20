@@ -7,7 +7,7 @@
 ### 1.1 Cloudflare Tunnel（长期稳定外网域名）
 
 链路：
-`Phone -> Cloudflare Edge (TLS) -> cloudflared (Windows) -> 127.0.0.1:8787`
+`Phone -> Cloudflare Edge (TLS) -> cloudflared (Windows) -> 127.0.0.1:8890`
 
 优点：
 - 固定域名，适合长期使用。
@@ -21,10 +21,10 @@
 ### 1.2 Tailscale Serve / Funnel（个人与小团队最省心）
 
 链路（私网）：
-`Phone(Tailscale) -> Tailnet -> Windows Host -> 127.0.0.1:8787`
+`Phone(Tailscale) -> Tailnet -> Windows Host -> 127.0.0.1:8890`
 
 链路（公网）：
-`Phone(Internet) -> Tailscale Funnel -> Windows Host -> 127.0.0.1:8787`
+`Phone(Internet) -> Tailscale Funnel -> Windows Host -> 127.0.0.1:8890`
 
 优点：
 - 零信任网络，默认不暴露给公网。
@@ -56,7 +56,7 @@ npm install
 
 ```powershell
 $env:CPDEX_HOST="127.0.0.1"
-$env:CPDEX_PORT="8787"
+$env:CPDEX_PORT="8890"
 $env:CPDEX_BRIDGE_TOKEN="REPLACE_WITH_A_LONG_RANDOM_TOKEN"
 $env:CPDEX_CODEX_EXECUTABLE="codex.exe"
 # 可选：$env:CPDEX_ASR_COMMAND="python D:\asr\transcribe.py --file {file} --lang {lang}"
@@ -71,7 +71,7 @@ npm run start
 4. 本机验证：
 
 ```powershell
-Invoke-RestMethod http://127.0.0.1:8787/api/health
+Invoke-RestMethod http://127.0.0.1:8890/api/health
 ```
 
 ### 3.2 Cloudflare Tunnel 步骤
@@ -107,7 +107,7 @@ tunnel: cpdex-phone
 credentials-file: C:\Users\Administrator\.cloudflared\<tunnel-id>.json
 ingress:
   - hostname: cpdex-phone.yourdomain.com
-    service: http://127.0.0.1:8787
+    service: http://127.0.0.1:8890
   - service: http_status:404
 ```
 
@@ -133,7 +133,7 @@ tailscale up
 2. 仅 tailnet 访问（推荐默认）：
 
 ```powershell
-tailscale serve https / http://127.0.0.1:8787
+tailscale serve https / http://127.0.0.1:8890
 ```
 
 3. 如需公网访问，临时启用 Funnel：
@@ -155,7 +155,7 @@ tailscale funnel status
 
 ## 4. TLS + Token 安全最佳实践
 
-1. 强制 HTTPS：仅通过 Tunnel/Funnel 域名访问，不直连 `http://公网IP:8787`。
+1. 强制 HTTPS：仅通过 Tunnel/Funnel 域名访问，不直连 `http://公网IP:8890`。
 2. 高强度 `CPDEX_BRIDGE_TOKEN`：至少 32 字节随机值，禁止弱口令。
 3. 最小授权：不要把 token 写进公开脚本或截图，手机端只保存在本地。
 4. 上传防护：限制 `CPDEX_MAX_BODY_MB`，并只给可信设备使用。
@@ -177,7 +177,7 @@ tailscale funnel status
 
 ### 6.1 手机外网打不开
 
-- 检查后端是否在 `127.0.0.1:8787` 正常监听。
+- 检查后端是否在 `127.0.0.1:8890` 正常监听。
 - 检查隧道状态：`cloudflared tunnel info <name>` 或 `tailscale funnel status`。
 - 检查域名 DNS 是否已生效。
 

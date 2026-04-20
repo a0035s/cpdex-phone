@@ -1,4 +1,4 @@
-# cpdex phone
+﻿# cpdex phone
 
 手机远程对接本机 `codex.exe` 的桥接项目。
 
@@ -32,7 +32,7 @@ npm install
 ```powershell
 $env:CPDEX_BRIDGE_TOKEN = "请替换成强随机token"
 $env:CPDEX_HOST = "127.0.0.1"
-$env:CPDEX_PORT = "8787"
+$env:CPDEX_PORT = "8890"
 $env:CPDEX_CODEX_EXECUTABLE = "codex.exe"
 # 可选：默认任务目录（不填则用 backend 的上级目录）
 # $env:CPDEX_DEFAULT_TASK_WORKDIR = "D:\你的项目目录"
@@ -49,7 +49,7 @@ npm start
 健康检查：
 
 ```powershell
-Invoke-RestMethod http://127.0.0.1:8787/api/health
+Invoke-RestMethod http://127.0.0.1:8890/api/health
 ```
 
 ### 2) 打开前端
@@ -61,7 +61,7 @@ start "D:\CODEX项目\cpdex phone\frontend\index.html"
 ```
 
 进入页面后填写：
-- `Backend Base URL`：例如 `http://127.0.0.1:8787`
+- `Backend Base URL`：例如 `http://127.0.0.1:8890`
 - `Bearer Token`：即 `CPDEX_BRIDGE_TOKEN`
 
 ### 3) 外网访问

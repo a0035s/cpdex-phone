@@ -53,7 +53,7 @@
 ## 环境变量
 
 - `CPDEX_HOST` 默认 `127.0.0.1`
-- `CPDEX_PORT` 默认 `8787`
+- `CPDEX_PORT` 默认 `8890`
 - `CPDEX_BRIDGE_TOKEN` 必填
 - `CPDEX_CODEX_EXECUTABLE` 默认 `codex.exe`
 - `CPDEX_DEFAULT_TASK_WORKDIR` 默认 `backend` 上级目录
