@@ -60,6 +60,12 @@ cd "D:\CODEX项目\cpdex phone"
 powershell -ExecutionPolicy Bypass -File .\scripts\start-local.ps1
 ```
 
+或双击根目录入口文件：
+
+`start-cpdex.cmd`
+
+它会自动启动后端并打开 `http://127.0.0.1:8890/admin/`。
+
 ### 2) 打开 Web UI（同端口）
 
 后端启动后，同一端口直接提供两套页面：

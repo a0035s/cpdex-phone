@@ -1,7 +1,9 @@
 param(
   [string]$Token = "",
   [int]$Port = 8890,
-  [string]$CodexExecutable = "codex.exe"
+  [string]$CodexExecutable = "codex.exe",
+  [switch]$OpenAdmin,
+  [switch]$NoBrowser
 )
 
 $ErrorActionPreference = "Stop"
@@ -32,3 +34,7 @@ Write-Host "Bearer Token: $Token"
 Write-Host "Admin UI: http://127.0.0.1:$Port/admin/"
 Write-Host "Mobile UI: http://127.0.0.1:$Port/mobile/"
 Write-Host "`nOpen /admin to manage tunnel and copy mobile links." -ForegroundColor Yellow
+
+if (-not $NoBrowser -and $OpenAdmin) {
+  Start-Process "http://127.0.0.1:$Port/admin/"
+}
