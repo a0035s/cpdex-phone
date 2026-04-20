@@ -35,6 +35,34 @@ body {
   color: var(--muted);
 }
 
+.hero-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.lang-select {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 170px;
+}
+
+.lang-select span {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.lang-select select {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: #fff;
+  color: var(--ink);
+}
+
 .card {
   background: var(--card);
   border: 1px solid var(--line);

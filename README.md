@@ -78,6 +78,7 @@ start http://127.0.0.1:8890/admin/
 - 手机聊天界面：`/mobile/`
 
 在 `admin` 页面可以直接看到 token、启动/停止 quick tunnel、复制手机端连接地址。
+并可在右上角选择语言：`简体中文 / 繁体中文 / English`，默认 `Auto` 跟随系统语言。
 
 ### 3) 外网访问
 
