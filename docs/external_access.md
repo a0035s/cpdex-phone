@@ -35,6 +35,19 @@
 - 纯 `serve` 模式需要手机安装 Tailscale 并加入 tailnet。
 - `funnel` 对外公开时仍需自己做好应用层鉴权。
 
+### 1.3 Cloudflare Quick Tunnel（最快上手，无需安装器）
+
+链路：
+`Phone -> trycloudflare.com 临时域名 -> cloudflared -> 127.0.0.1:8890`
+
+优点：
+- 不需要 `winget/choco/scoop`。
+- 不需要先创建 Cloudflare 账号即可快速测试外网连通。
+
+缺点：
+- 域名是临时的，每次启动都会变化。
+- 不适合长期稳定生产入口。
+
 ## 2. 方案选择建议
 
 - 你要长期固定域名、多人偶尔访问：优先 Cloudflare Tunnel。
@@ -120,6 +133,25 @@ cloudflared tunnel run cpdex-phone
 7. 手机访问：
 - 入口：`https://cpdex-phone.yourdomain.com`
 - 建议再叠加 Cloudflare Access，仅允许你的身份通过。
+
+### 3.2A Cloudflare Quick Tunnel（本项目一键脚本）
+
+如果你机器没有包管理器，或想先快速验证外网连通，直接运行：
+
+```powershell
+cd "D:\CODEX项目\cpdex phone"
+powershell -ExecutionPolicy Bypass -File .\scripts\start-external-quicktunnel.ps1
+```
+
+脚本会自动：
+1. 启动 backend（`127.0.0.1:8890`）
+2. 自动下载 `cloudflared.exe` 到 `tools/`
+3. 启动 Quick Tunnel 并输出临时公网 URL
+
+使用方式：
+- 手机前端里 `Backend Base URL` 填 `https://*.trycloudflare.com`
+- `Bearer Token` 填脚本输出值
+- 结束时在脚本窗口按 `Ctrl+C`
 
 ### 3.3 Tailscale Serve / Funnel 步骤
 

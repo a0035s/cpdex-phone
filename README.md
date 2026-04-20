@@ -52,6 +52,13 @@ npm start
 Invoke-RestMethod http://127.0.0.1:8890/api/health
 ```
 
+或直接用一键脚本（自动生成 token）：
+
+```powershell
+cd "D:\CODEX项目\cpdex phone"
+powershell -ExecutionPolicy Bypass -File .\scripts\start-local.ps1
+```
+
 ### 2) 打开前端
 
 前端是静态页，直接打开即可：
@@ -71,3 +78,15 @@ start "D:\CODEX项目\cpdex phone\frontend\index.html"
 - [外网访问方案（Windows）](D:/CODEX项目/cpdex phone/docs/external_access.md)
 
 建议优先使用 Cloudflare Tunnel 或 Tailscale Funnel，并保留 Bearer Token 鉴权。
+
+如果你当前机器没有 `winget/choco/scoop`，可以直接用 Quick Tunnel 脚本（自动下载 cloudflared）：
+
+```powershell
+cd "D:\CODEX项目\cpdex phone"
+powershell -ExecutionPolicy Bypass -File .\scripts\start-external-quicktunnel.ps1
+```
+
+脚本会输出：
+- 本机后端地址（默认 `http://127.0.0.1:8890`）
+- Bearer Token
+- Cloudflare 临时公网地址（`https://*.trycloudflare.com`）
